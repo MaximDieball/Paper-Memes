@@ -1,0 +1,66 @@
+/* Make text */
+* {
+  color: white;
+}
+
+/* Style buttons */
+button {
+  background-color: rgba(34, 34, 34, 0.4);
+  color: white;
+  border: 1px solid darkslateblue;
+  border-radius: 20px;
+  font-size: 12px;
+  width: auto;
+  min-width: 110px;
+  max-width: 120px;
+  min-height: 25px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, border-color 0.3s ease-in-out;
+  display: inline-block;
+}
+
+/* Hover effect */
+button:hover {
+  background-color: rgba(68, 68, 68, 0.8);
+  border-color: white;
+}
+
+input {
+  background-color: rgba(34, 34, 34, 0.4);
+  color: white;
+  border: 1px solid darkslateblue;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  width: auto;
+  min-width: 110px;
+  max-width: 110px;
+  min-height: 25px;
+  text-align: center;
+  transition: background 0.3s ease-in-out, border-color 0.3s ease-in-out;
+  outline: none;
+}
+
+/* Input focus effect */
+input:focus {
+  background-color: rgba(68, 68, 68, 0.8);
+  border-color: white;
+}
+
+/* Input place holder */
+input::placeholder {
+  font-size: 15px;
+}
+
+/* Style divs */
+#settings-popup, 
+#wallet-popup, 
+#buy-loading-popup,
+#custom-overlay {
+  background-color: rgba(34, 34, 34, 0.8);
+  color: white;
+  border: 1px solid darkslateblue;
+  border-radius: 15px;
+  margin: 5px;
+}
