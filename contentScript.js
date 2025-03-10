@@ -1,8 +1,6 @@
 //chrome://extensions/
 
-// =======================
-// OVERLAY CONTAINER
-// =======================
+// Main Overlay idv
 const overlay = document.createElement('div');
 overlay.id = 'custom-overlay';
 Object.assign(overlay.style, {
@@ -16,7 +14,7 @@ Object.assign(overlay.style, {
   boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.5)'
 });
 
-// Header/title
+// Header
 const header = document.createElement('div');
 header.innerText = 'Paper Memes - To The Moon 🚀';
 header.style.fontWeight = 'bold';
@@ -69,8 +67,6 @@ const tokensOwnedValueDisplay = document.createElement('div');
 tokensOwnedValueDisplay.innerText = 'Tokens Value: $0';
 tokensOwnedValueDisplay.style.marginBottom = '0px';
 overlay.appendChild(tokensOwnedValueDisplay);
-
-
 
 // Settings button
 const settingsButton = document.createElement('button');
@@ -180,9 +176,7 @@ overlay.appendChild(sell100Button);
 // Append the overlay to the document body
 document.body.appendChild(overlay);
 
-// =======================
-// WALLET POPUP
-// =======================
+// Wallet Popup div
 const walletPopup = document.createElement('div');
 walletPopup.id = 'wallet-popup';
 Object.assign(walletPopup.style, {
@@ -227,9 +221,7 @@ walletPopup.appendChild(cancelWalletButton);
 document.body.appendChild(walletPopup);
 
 
-// =======================
-// AD POPUP
-// =======================
+// Ad Popup div
 const adPopup = document.createElement('div');
 adPopup.id = 'ad-popup';
 Object.assign(adPopup.style, {
@@ -260,6 +252,7 @@ adTitle.textContent = 'Ad Content';
 adTitle.style.color = 'black';
 adHeader.appendChild(adTitle);
 
+// Close ad button
 const closeAdButton = document.createElement('button');
 closeAdButton.textContent = '×';
 closeAdButton.style.border = 'none';
@@ -274,7 +267,7 @@ adHeader.appendChild(closeAdButton);
 
 adPopup.appendChild(adHeader);
 
-// Iframe for ad content
+// Iframe for ad website
 const adIframe = document.createElement('iframe');
 adIframe.src = 'https://maximdieball.github.io/ads-host/';
 adIframe.style.width = '100%';
@@ -285,9 +278,7 @@ adPopup.appendChild(adIframe);
 document.body.appendChild(adPopup);
 makeDraggable(adPopup, adHeader);
 
-// =============================
-// VARIABLES AND SYNC LOGIC
-// =============================
+// Global variables
 let currentWalletAmount = 0;
 let originalWalletAmount = 0;
 let absoluteFee = 0.5;
@@ -296,13 +287,12 @@ let ownedTokens = 0;
 let ownedTokensValue = 0;
 let originalInvestment = 0;
 
-// =======================
-// DRAGGING FUNCTION
-// =======================
+// Add dragging to div function
 function makeDraggable(element, handle) {
   let isDragging = false;
   let offsetX, offsetY;
 
+  // listen for mouse down and ad draging listners 
   handle.addEventListener('mousedown', (e) => {
     isDragging = true;
     offsetX = e.clientX - element.offsetLeft;
@@ -312,13 +302,14 @@ function makeDraggable(element, handle) {
     e.preventDefault();
   });
 
+  // draging
   function onMouseMove(e) {
     if (isDragging) {
       element.style.left = `${e.clientX - offsetX}px`;
       element.style.top = `${e.clientY - offsetY}px`;
     }
   }
-
+  // remove mouse down listeners and stop dragging if mouse up
   function onMouseUp() {
     isDragging = false;
     document.removeEventListener('mousemove', onMouseMove);
@@ -329,9 +320,7 @@ function makeDraggable(element, handle) {
 makeDraggable(overlay, header);
 makeDraggable(walletPopup, walletHeader);
 
-// ==========================
-// SYNC STORAGE ON LOAD
-// ==========================
+// Sync storage - GPT CODE
 function syncStorage() {
   chrome.storage.local.get([
     "currentWalletAmount",
@@ -365,9 +354,7 @@ function syncStorage() {
 }
 syncStorage();
 
-// =======================
-// SETTINGS POPUP
-// =======================
+// Settings Popup
 const settingsPopup = document.createElement('div');
 settingsPopup.id = 'settings-popup';
 Object.assign(settingsPopup.style, {
@@ -381,6 +368,7 @@ Object.assign(settingsPopup.style, {
   textAlign: 'center',
   display: 'none',
 });
+// header
 const settingsHeader = document.createElement('div');
 settingsHeader.innerText = 'Settings';
 settingsHeader.style.fontWeight = 'bold';
@@ -390,7 +378,7 @@ settingsPopup.appendChild(settingsHeader);
 
 makeDraggable(settingsPopup, settingsHeader);
 
-// 6.1) Helper to build each setting row
+// Function to create title and input for each setting
 const createSettingInput = (labelText, key, value) => {
   const container = document.createElement('div');
   container.style.marginBottom = '10px';
@@ -411,7 +399,7 @@ const createSettingInput = (labelText, key, value) => {
   return { container, input, key };
 };
 
-// 6.2) Build the setting inputs (store references)
+// calling creatSettingInput for each setting
 const settingInputs = {};
 const settingsData = [
   { label: 'Percentage Fee (%)', key: 'percentageFee', value: percentageFee },
@@ -424,7 +412,7 @@ settingsData.forEach(item => {
   settingInputs[key] = input;
 });
 
-// 6.3) Confirm button - saves new settings to chrome.storage.local
+// Confirm button - save new settings to chrome.storage.local
 const confirmSettingsButton = document.createElement('button');
 confirmSettingsButton.innerText = 'Confirm';
 confirmSettingsButton.style.fontSize = '12px';
@@ -442,7 +430,7 @@ confirmSettingsButton.addEventListener('click', () => {
 });
 settingsPopup.appendChild(confirmSettingsButton);
 
-// 6.4) Cancel button - closes popup without saving changes
+// closes popup without saving changes
 const cancelSettingsButton = document.createElement('button');
 cancelSettingsButton.innerText = 'Cancel';
 cancelSettingsButton.style.fontSize = '12px';
@@ -464,9 +452,7 @@ settingsButton.addEventListener('click', () => {
   syncStorage();
 });
 
-// =======================
-// WALLET BUTTON EVENTS
-// =======================
+// Wallet button
 // Show wallet popup
 walletButton.addEventListener('click', () => {
   walletPopup.style.display = 'block';
@@ -496,9 +482,7 @@ cancelWalletButton.addEventListener('click', () => {
   walletInput.value = currentWalletAmount;
 });
 
-// =======================
-// BUY BUTTON EVENTS
-// =======================
+// Buy button events
 
 buyButton.addEventListener('click', () => {
   const amount = parseFloat(buyInput.value);
@@ -513,9 +497,7 @@ buy100Button.addEventListener('click', () => {
   createOrder(100, buyOrder);
 });
 
-// =======================
-// SELL BUTTON EVENTS
-// =======================
+// Sell button events
 
 sellButton.addEventListener('click', () => {
   const amount = parseFloat(sellInput.value);
@@ -533,9 +515,7 @@ sell100Button.addEventListener('click', () => {
   createOrder(100, percentageSellOrder);
 });
 
-// =======================
-// STORAGE CHANGE LISTENER
-// =======================
+// storage listener - GPT Written
 chrome.storage.onChanged.addListener((changes) => {
   // Wallet updates
   if (changes.currentWalletAmount) {
@@ -557,13 +537,11 @@ chrome.storage.onChanged.addListener((changes) => {
   }
 });
 
-// =======================
-// UPDATES
-// =======================
+// update function (loop)
 let price = 0;
 let liquidity = 0;
 function update() {
-  // update wallet gain percentage
+  // update wallet gain percentage display
   let gainsPercentage = (ownedTokensValue + currentWalletAmount) / originalWalletAmount * 100 - 100;
   gainsPercentage = gainsPercentage.toFixed(1);
   if (gainsPercentage < 0) {
@@ -605,7 +583,7 @@ function update() {
     }
   }
 
-
+  // update liquidity
   if (liquidityElement) {
     const photonLiquidityValue = liquidityElement.getAttribute('data-value');
     liquidity = parseFloat(photonLiquidityValue);
@@ -615,9 +593,7 @@ function update() {
 
 setInterval(update, 250);
 
-// =======================
-// LOADING POPUP FOR ORDER
-// =======================
+// loading popup for orders
 function createOrder(amount, orderFunction) {
   const popup = document.createElement('div');
   popup.id = 'buy-loading-popup';
@@ -634,6 +610,7 @@ function createOrder(amount, orderFunction) {
   text.textContent = 'Processing Order...';
   popup.appendChild(text);
 
+  // porograss bar container
   const progressContainer = document.createElement('div');
   progressContainer.style.width = '200px';
   progressContainer.style.height = '20px';
@@ -642,6 +619,7 @@ function createOrder(amount, orderFunction) {
   progressContainer.style.borderRadius = '10px';
   popup.appendChild(progressContainer);
 
+  //progress bar in container
   const progressBar = document.createElement('div');
   progressBar.style.width = '0%';
   progressBar.style.height = '100%';
@@ -652,6 +630,7 @@ function createOrder(amount, orderFunction) {
 
   document.body.appendChild(popup);
 
+  // play animation
   const duration = 1000; // 1s
   let start = null;
 
@@ -665,6 +644,7 @@ function createOrder(amount, orderFunction) {
       requestAnimationFrame(animate);
     } else {
       popup.remove();
+      // actually process order
       orderFunction(amount);
     }
   }
@@ -672,22 +652,21 @@ function createOrder(amount, orderFunction) {
   requestAnimationFrame(animate);
 }
 
-// =======================
-// ORDER FUNCTIONS
-// =======================
+// Order function
 
 function buyOrder(amount) {
   // Checking if any coin is selected
   if (priceDisplay.innerText == "Current Price: Loading..."){
     return;
   }
-  // Buying coin Fee
+  // Calculate price with fees
   trueOrderPrice = amount + amount * (percentageFee / 100) + absoluteFee;
-
+  // check wallet balance
   if (currentWalletAmount - trueOrderPrice < 0) {
     alert('Not enough money in wallet!');
     return
   }
+  // calculate new info
   currentWalletAmount = currentWalletAmount - trueOrderPrice;
   ownedTokens = ownedTokens + Math.floor(amount / price);
   ownedTokensValue = ownedTokens * price;
@@ -709,13 +688,15 @@ function sellOrder(amount) {
   if (priceDisplay.innerText == "Current Price: Loading..."){
     return;
   }
-
+  // check token amount
   if (ownedTokensValue - amount < 0) {
     alert(`Not enough Tokens  amount:${amount}`);
     return
   }
+  // calculate the new amount of tokens
   ownedTokens = ownedTokens - Math.ceil(amount / price);
 
+  // calculate liquidity multiplier for highers losses on liquidity lower than 9000 / simulating pumpfun liquidity
   let lowLiquidityMultiplier = 1;
   if (liquidity < 9000) {
     lowLiquidityMultiplier = (liquidity - 8000) * (10 ** -3);
