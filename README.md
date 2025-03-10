@@ -22,6 +22,7 @@ A Chrome Extension for [photon-sol.tinyastro.io](https://photon-sol.tinyastro.io
 - **Select a Meme Coin:**
   - Click on any meme coin on the page.
   - The pop-up should appear, displaying trade options.
+
 ![Trading Pop-up](assets/ScreenshotMain.png)
 - **Buy & Sell:**
   - Use your wallet balance to buy and sell meme coins.
@@ -35,6 +36,7 @@ A Chrome Extension for [photon-sol.tinyastro.io](https://photon-sol.tinyastro.io
 - **Reset Wallet Balance:**
   - To reset your balance, click on "Set Wallet" in the menu.
   - Enter any amount and press "Open Ad."
+
 ![Trading Pop-up](assets/ScreenshotReset.png)
 ### Settings
 
