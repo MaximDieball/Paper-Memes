@@ -43,4 +43,5 @@ A Chrome Extension for [photon-sol.tinyastro.io](https://photon-sol.tinyastro.io
   - Options available:
     - **Absolute Fee**
     - **Percentage Fee**
+
 ![Trading Pop-up](assets/ScreenshotSettings.png)
