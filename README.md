@@ -48,7 +48,7 @@ A Chrome Extension for [photon-sol.tinyastro.io](https://photon-sol.tinyastro.io
 
 ![Trading Pop-up](assets/ScreenshotSettings.png)
 
-###Realistic features  
+### Realistic features  
 - **Trade Fee Settings:**  
   - In the settings, you can adjust the fees for each trade.  
   - Options available:  
