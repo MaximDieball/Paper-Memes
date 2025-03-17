@@ -5,15 +5,16 @@ A Chrome Extension for [photon-sol.tinyastro.io](https://photon-sol.tinyastro.io
 ## Setup
 
 1. **Download or Clone the Repository**
-2. **Add the Extension to Chrome**
+2. - You may have to unzip it.
+3. **Add the Extension to Chrome**
    - Go to `chrome://extensions` in your browser.
    - Enable "Developer Mode."
    - Click "Load unpacked" and select the folder where the repo is downloaded or cloned.
-3. **Create a Phantom Wallet**
+4. **Create a Phantom Wallet**
    - Visit [Phantom Wallet](https://phantom.com/download) to create your wallet for free.
-4. **Sign In to Photon-Sol**
+5. **Sign In to Photon-Sol**
    - Use your Phantom wallet to sign in at [photon-sol.tinyastro.io](https://photon-sol.tinyastro.io).
-5. **Start Trading**
+6. **Start Trading**
 
 ## How It Works
 
