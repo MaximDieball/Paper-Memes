@@ -205,7 +205,7 @@ walletInput.style.width = '80%';
 walletPopup.appendChild(walletInput);
 
 const confirmWalletButton = document.createElement('button');
-confirmWalletButton.innerText = 'Open Ad';
+confirmWalletButton.innerText = 'Confirm';
 confirmWalletButton.style.position = 'absolute';
 confirmWalletButton.style.left = '20px';
 confirmWalletButton.style.bottom = '20px';
@@ -220,63 +220,6 @@ walletPopup.appendChild(cancelWalletButton);
 
 document.body.appendChild(walletPopup);
 
-
-// Ad Popup div
-const adPopup = document.createElement('div');
-adPopup.id = 'ad-popup';
-Object.assign(adPopup.style, {
-  position: 'fixed',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '600px',
-  height: '400px',
-  backgroundColor: 'white',
-  zIndex: '10001',
-  display: 'none',
-  border: '1px solid #ccc',
-  boxShadow: '0px 0px 10px rgba(0,0,0,0.5)'
-});
-
-// Ad popup header
-const adHeader = document.createElement('div');
-adHeader.style.padding = '10px';
-adHeader.style.backgroundColor = '#f0f0f0';
-adHeader.style.cursor = 'move';
-adHeader.style.display = 'flex';
-adHeader.style.justifyContent = 'space-between';
-adHeader.style.alignItems = 'center';
-
-const adTitle = document.createElement('div');
-adTitle.textContent = 'Ad Content';
-adTitle.style.color = 'black';
-adHeader.appendChild(adTitle);
-
-// Close ad button
-const closeAdButton = document.createElement('button');
-closeAdButton.textContent = '×';
-closeAdButton.style.border = 'none';
-closeAdButton.style.background = 'transparent';
-closeAdButton.style.cursor = 'pointer';
-closeAdButton.style.fontSize = '20px';
-closeAdButton.style.color = 'black';
-closeAdButton.addEventListener('click', () => {
-  adPopup.style.display = 'none';
-});
-adHeader.appendChild(closeAdButton);
-
-adPopup.appendChild(adHeader);
-
-// Iframe for ad website
-const adIframe = document.createElement('iframe');
-adIframe.src = 'https://maximdieball.github.io/ads-host/';
-adIframe.style.width = '100%';
-adIframe.style.height = 'calc(100% - 40px)';
-adIframe.style.border = 'none';
-adPopup.appendChild(adIframe);
-
-document.body.appendChild(adPopup);
-makeDraggable(adPopup, adHeader);
 
 // Global variables
 let currentWalletAmount = 0;
@@ -332,9 +275,14 @@ function syncStorage() {
     if (data.currentWalletAmount !== undefined) {
       currentWalletAmount = data.currentWalletAmount;
       walletDisplay.innerText = `Wallet: $${currentWalletAmount.toFixed(2)}`;
+    } else {
+      currentWalletAmount = 250;
+      walletDisplay.innerText = `Wallet: $${currentWalletAmount.toFixed(2)}`;
     }
     if (data.originalWalletAmount !== undefined) {
       originalWalletAmount = data.originalWalletAmount;
+    } else {
+      originalWalletAmount = 250;
     }
 
     // Settings
@@ -471,7 +419,6 @@ confirmWalletButton.addEventListener('click', () => {
 
     // open ad
     //window.open('https://maximdieball.github.io/ads-host/', '_blank');
-    adPopup.style.display = 'block';
   }
 });
 
@@ -541,20 +488,15 @@ chrome.storage.onChanged.addListener((changes) => {
 let price = 0;
 let liquidity = 0;
 function update() {
-  // update wallet gain percentage display
-  let gainsPercentage = (ownedTokensValue + currentWalletAmount) / originalWalletAmount * 100 - 100;
-  gainsPercentage = gainsPercentage.toFixed(1);
-  if (gainsPercentage < 0) {
-    gainsPercentage = String(gainsPercentage);
-  } else {
-    gainsPercentage = "+" + String(gainsPercentage);
-  }
-  let percentageColor = gainsPercentage < 0 ? "#ff7f7f" : "#90ee90";
-  walletGainPercentageDisplay.innerHTML = `<span style="color: ${percentageColor};">${gainsPercentage}%</span>`;
-
-
   const priceElement = document.querySelector('.p-show__widget__td__value[data-cable-val="priceUsd"]');
   const liquidityElement = document.querySelector('.p-show__widget__td__value[data-cable-val="usdLiquidity"]');
+  let lowLiquidityMultiplier = 1
+
+  // update liquidity
+  if (liquidityElement) {
+    const photonLiquidityValue = liquidityElement.getAttribute('data-value');
+    liquidity = parseFloat(photonLiquidityValue);
+  }
 
   if (priceElement) {
     // update price
@@ -571,7 +513,17 @@ function update() {
     // update owned tokens value
     if (ownedTokens > 0) {
       ownedTokensValue = ownedTokens * price;
-      let tokenGainsPercentage = ownedTokensValue / originalInvestment * 100 - 100;
+
+      // calculate higher loss due to low liqudity
+      if (liquidity < 8000) {
+        lowLiquidityMultiplier = 0.01;
+      }
+      else if (liquidity < 9000) {
+        lowLiquidityMultiplier = (liquidity - 8000) * (10 ** -3);
+        console.log("lowLiquidityMultiplier:", lowLiquidityMultiplier);
+      }
+
+      let tokenGainsPercentage = ownedTokensValue*lowLiquidityMultiplier / originalInvestment * 100 - 100;
       tokenGainsPercentage = tokenGainsPercentage.toFixed(1);
       if (tokenGainsPercentage < 0) {
         tokenGainsPercentage = String(tokenGainsPercentage);
@@ -579,15 +531,21 @@ function update() {
         tokenGainsPercentage = "+" + String(tokenGainsPercentage);
       }
       let percentageColor = tokenGainsPercentage <= 0 ? "#ff7f7f" : "#90ee90";
-      tokensOwnedValueDisplay.innerHTML = `Tokens Value: $${ownedTokensValue.toFixed(2)} <span style="color: ${percentageColor};">${tokenGainsPercentage}%</span>`;
+      tokensOwnedValueDisplay.innerHTML = `Tokens Value: $${(ownedTokensValue*lowLiquidityMultiplier).toFixed(2)} <span style="color: ${percentageColor};">${tokenGainsPercentage}%</span>`;
     }
   }
 
-  // update liquidity
-  if (liquidityElement) {
-    const photonLiquidityValue = liquidityElement.getAttribute('data-value');
-    liquidity = parseFloat(photonLiquidityValue);
-  }
+    // update wallet gain percentage display
+    let gainsPercentage = (currentWalletAmount) / originalWalletAmount * 100 - 100;
+    gainsPercentage = gainsPercentage.toFixed(1);
+    if (gainsPercentage < 0) {
+      gainsPercentage = String(gainsPercentage);
+    } else {
+      gainsPercentage = "+" + String(gainsPercentage);
+    }
+    let percentageColor = gainsPercentage < 0 ? "#ff7f7f" : "#90ee90";
+    walletGainPercentageDisplay.innerHTML = `<span style="color: ${percentageColor};">${gainsPercentage}%</span>`;
+
 }
 
 
@@ -656,7 +614,7 @@ function createOrder(amount, orderFunction) {
 
 function buyOrder(amount) {
   // Checking if any coin is selected
-  if (priceDisplay.innerText == "Current Price: Loading..."){
+  if (priceDisplay.innerText == "Current Price: Loading...") {
     return;
   }
   // Calculate price with fees
@@ -684,8 +642,9 @@ function buyOrder(amount) {
 }
 
 function sellOrder(amount) {
+  console.log("orignial invest before", originalInvestment);
   // check if any coins is selected
-  if (priceDisplay.innerText == "Current Price: Loading..."){
+  if (priceDisplay.innerText == "Current Price: Loading...") {
     return;
   }
   // check token amount
@@ -698,14 +657,17 @@ function sellOrder(amount) {
 
   // calculate liquidity multiplier for highers losses on liquidity lower than 9000 / simulating pumpfun liquidity
   let lowLiquidityMultiplier = 1;
-  if (liquidity < 9000) {
+  if (liquidity < 8000) {
+    lowLiquidityMultiplier = 0.01;
+  }
+  else if (liquidity < 9000) {
     lowLiquidityMultiplier = (liquidity - 8000) * (10 ** -3);
     console.log("lowLiquidityMultiplier:", lowLiquidityMultiplier);
-    amount = amount * lowLiquidityMultiplier;
   }
+  amount = amount * lowLiquidityMultiplier;
   currentWalletAmount = currentWalletAmount + amount;
   ownedTokensValue = ownedTokens * price;
-  originalInvestment = originalInvestment - amount;
+
   if (ownedTokens > 0) {
     originalInvestment = originalInvestment - amount;
   } else {
@@ -721,6 +683,9 @@ function sellOrder(amount) {
   chrome.storage.local.set({ currentWalletAmount: currentWalletAmount }, () => {
     console.log("Wallet amount updated in storage:", currentWalletAmount);
   });
+  console.log("amount after", amount);
+  console.log("orignial invest after", originalInvestment);
+
 }
 
 function percentageSellOrder(percentage) {
