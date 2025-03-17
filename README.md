@@ -47,3 +47,12 @@ A Chrome Extension for [photon-sol.tinyastro.io](https://photon-sol.tinyastro.io
     - **Percentage Fee**
 
 ![Trading Pop-up](assets/ScreenshotSettings.png)
+
+###Realistic features  
+- **Trade Fee Settings:**  
+  - In the settings, you can adjust the fees for each trade.  
+  - Options available:  
+    - **Absolute Fee**  
+    - **Percentage Fee**  
+- **1-second delay for buy and sell orders**  
+- **Simulated slippage for very low liquidity**
