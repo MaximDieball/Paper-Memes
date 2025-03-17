@@ -35,7 +35,7 @@ A Chrome Extension for [photon-sol.tinyastro.io](https://photon-sol.tinyastro.io
 
 - **Reset Wallet Balance:**
   - To reset your balance, click on "Set Wallet" in the menu.
-  - Enter any amount and press "Open Ad."
+  - Enter any amount and press "Confirm"
 
 ![Trading Pop-up](assets/ScreenshotReset.png)
 ### Settings
