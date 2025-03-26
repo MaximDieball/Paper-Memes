@@ -3,15 +3,15 @@
 A Chrome Extension for [photon-sol.tinyastro.io](https://photon-sol.tinyastro.io) that overlays a menu on the website, enabling you to place paper trades on real pumpfun meme coins.
 
 ## Setup - Chrome Web Store
-1.   **Go to the Chrome Web Store and get the extension**
-   - link: [Chrome Web Store](https://chromewebstore.google.com/detail/paper-memes-to-the-moon/hgdfiddihagiidddmifmoknaglmpmdkd?utm_source=item-share-cb) 
+1. **Go to the Chrome Web Store and get the extension.**
+   - Visit [Chrome Web Store](https://chromewebstore.google.com/detail/paper-memes-to-the-moon/hgdfiddihagiidddmifmoknaglmpmdkd?utm_source=item-share-cb) 
 3. **Create a Phantom Wallet**
    - Visit [Phantom Wallet](https://phantom.com/download) to create your wallet for free.
 4. **Sign In to Photon-Sol**
    - Use your Phantom wallet to sign in at [photon-sol.tinyastro.io](https://photon-sol.tinyastro.io).
 5. **Start Trading**
 
-## Setup - From Github
+## Setup - Github
 1. **Alternatively download or Clone the Repository**
    - You may have to unzip it.
 2. **Add the Extension to Chrome**
