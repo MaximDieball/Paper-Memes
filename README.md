@@ -6,8 +6,8 @@ A Chrome Extension for [photon-sol.tinyastro.io](https://photon-sol.tinyastro.io
 1.   **Go to the Chrome Web Store and get the extension**
    - https://chromewebstore.google.com/detail/paper-memes-to-the-moon/hgdfiddihagiidddmifmoknaglmpmdkd?utm_source=item-share-cb
 0.1. **Alternatively download or Clone the Repository**
-0.2. - You may have to unzip it.
-0.3. **Add the Extension to Chrome**
+   - You may have to unzip it.
+0.2. **Add the Extension to Chrome**
    - Go to `chrome://extensions` in your browser.
    - Enable "Developer Mode."
    - Click "Load unpacked" and select the folder where the repo is downloaded or cloned.
